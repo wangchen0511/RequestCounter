@@ -6,6 +6,7 @@ package requestCounter;
  *
  *	Should be immutable
  *
+ *
  */
 
 public interface ITimeStamp {

@@ -44,7 +44,7 @@ public class RequestCounterLowAccuracy implements IRequestCounter{
 	
 	public RequestCounterLowAccuracy(Class<? extends ITimeStamp> timeStampClass) throws InstantiationException, IllegalAccessException{
 		this.timeStampClass = timeStampClass;
-		ITimeStamp timeStamp = this.timeStampClass.newInstance();
+		ITimeStamp timeStamp = TimeStampFactory.getTimeStamp(timeStampClass);
 		this.currentSec = new TimeElement(timeStamp, 0);
 		this.currentMin = new TimeElement(timeStamp, 0);
 		this.currentHour = new TimeElement(timeStamp, 0);
@@ -52,7 +52,7 @@ public class RequestCounterLowAccuracy implements IRequestCounter{
 	}
 	
 	public void addOneRequest() throws InstantiationException, IllegalAccessException{
-		ITimeStamp currentTime = this.timeStampClass.newInstance();
+		ITimeStamp currentTime = TimeStampFactory.getTimeStamp(timeStampClass);
 		addNumToDayBuffer(1, currentTime);//Run fast task firstly
 		addNumToHourBuffer(1, currentTime);
 		addNumToMinBuffer(1, currentTime);
@@ -158,7 +158,7 @@ public class RequestCounterLowAccuracy implements IRequestCounter{
 
 	public long getThisSec() throws InstantiationException, IllegalAccessException {
 		synchronized(secBuffer){
-			ITimeStamp currentTime = this.timeStampClass.newInstance();
+			ITimeStamp currentTime = TimeStampFactory.getTimeStamp(timeStampClass);
 			updateSecBuffer(currentTime);
 			return currentSec.getRequestNum();
 		}
@@ -166,7 +166,7 @@ public class RequestCounterLowAccuracy implements IRequestCounter{
 
 	public long getLastSeveralMins(int mins) throws InstantiationException, IllegalAccessException {
 		synchronized(minBuffer){
-			ITimeStamp currentTime = this.timeStampClass.newInstance();
+			ITimeStamp currentTime = TimeStampFactory.getTimeStamp(timeStampClass);
 			updateMinBuffer(currentTime);
 			Iterator<TimeElement> iter = minBuffer.iteratorFromTailToHead();
 			return requestStat(currentTime, mins, iter, BufferType.MIN);
@@ -175,7 +175,7 @@ public class RequestCounterLowAccuracy implements IRequestCounter{
 
 	public long getLastSeveralSecs(int secs) throws InstantiationException, IllegalAccessException {
 		synchronized(secBuffer){
-			ITimeStamp currentTime = this.timeStampClass.newInstance();
+			ITimeStamp currentTime = TimeStampFactory.getTimeStamp(timeStampClass);
 			updateSecBuffer(currentTime);
 			Iterator<TimeElement> iter = secBuffer.iteratorFromTailToHead();
 			return requestStat(currentTime, secs, iter, BufferType.SEC);
@@ -188,7 +188,7 @@ public class RequestCounterLowAccuracy implements IRequestCounter{
 
 	public long getThisHour() throws InstantiationException, IllegalAccessException {
 		synchronized(hourBuffer){
-			ITimeStamp currentTime = this.timeStampClass.newInstance();
+			ITimeStamp currentTime = TimeStampFactory.getTimeStamp(timeStampClass);
 			updateHourBuffer(currentTime);
 			return currentHour.getRequestNum();
 		}
@@ -196,7 +196,7 @@ public class RequestCounterLowAccuracy implements IRequestCounter{
 
 	public long getThisMin() throws InstantiationException, IllegalAccessException {
 		synchronized(minBuffer){
-			ITimeStamp currentTime = this.timeStampClass.newInstance();
+			ITimeStamp currentTime = TimeStampFactory.getTimeStamp(timeStampClass);
 			updateSecBuffer(currentTime);
 			return currentMin.getRequestNum();
 		}
@@ -205,7 +205,7 @@ public class RequestCounterLowAccuracy implements IRequestCounter{
 	@Override
 	public long getLastSeveralHours(int hours) throws InstantiationException, IllegalAccessException {
 		synchronized(hourBuffer){
-			ITimeStamp currentTime = this.timeStampClass.newInstance();
+			ITimeStamp currentTime = TimeStampFactory.getTimeStamp(timeStampClass);
 			updateHourBuffer(currentTime);
 			Iterator<TimeElement> iter = hourBuffer.iteratorFromTailToHead();
 			return requestStat(currentTime, hours, iter, BufferType.HOUR);
@@ -222,7 +222,7 @@ public class RequestCounterLowAccuracy implements IRequestCounter{
 	public long getLastSeveralDays(int days) throws InstantiationException,
 			IllegalAccessException {
 		synchronized(dayBuffer){
-			ITimeStamp currentTime = this.timeStampClass.newInstance();
+			ITimeStamp currentTime = TimeStampFactory.getTimeStamp(timeStampClass);
 			updateDayBuffer(currentTime);
 			Iterator<TimeElement> iter = dayBuffer.iteratorFromTailToHead();
 			return requestStat(currentTime, days, iter, BufferType.DAY);

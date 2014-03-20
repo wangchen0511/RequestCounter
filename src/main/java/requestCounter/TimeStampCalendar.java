@@ -9,6 +9,9 @@ import java.util.concurrent.TimeUnit;
  *
  *
  *	Immutable class.
+ *
+ *	This is time stamp is used for real world time. That means when we say this hour, 
+ *	if current time is 8:15, then this hour means from 8:00 ~ 9:00. Last hour means 7:00 ~ 8:00.
  */
 
 public class TimeStampCalendar implements ITimeStamp {
