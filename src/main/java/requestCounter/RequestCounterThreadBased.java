@@ -28,16 +28,13 @@ public class RequestCounterThreadBased implements IRequestCounter {
 		public void run() {
 			try{
 				lock.lock();
-				secQueue.add(currentSecReqs.get());
-				currentSecReqs.set(0);
+				secQueue.add(currentSecReqs.getAndSet(0));
 				if(secCounter.incrementAndGet() == 60){
 					secCounter.set(0);
-					minQueue.add(currentMinReqs.get());
-					currentMinReqs.set(0);
+					minQueue.add(currentMinReqs.getAndSet(0));
 					if(minCounter.incrementAndGet() == 60){
 						minCounter.set(0);
-						hourQueue.add(currentHourReqs.get());
-						currentHourReqs.set(0);
+						hourQueue.add(currentHourReqs.getAndSet(0));
 					}
 				}
 			}finally{
