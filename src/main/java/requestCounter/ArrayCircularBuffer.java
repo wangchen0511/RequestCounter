@@ -22,6 +22,8 @@ public class ArrayCircularBuffer<T> implements ICircularBuffer<T> {
 		arr[tail] = t;
 		if(length == size){
 			head = (head == size - 1) ? 0 : head + 1;
+		}else{
+			length++;
 		}
 	}
 

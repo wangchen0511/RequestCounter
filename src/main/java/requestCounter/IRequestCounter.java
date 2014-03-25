@@ -23,4 +23,6 @@ public interface IRequestCounter {
 	public long getLastDay() throws InstantiationException, IllegalAccessException;
 	
 	public long getLastSeveralDays(int days) throws InstantiationException, IllegalAccessException;
+
+	public void addOneRequest() throws InstantiationException, IllegalAccessException;
 }

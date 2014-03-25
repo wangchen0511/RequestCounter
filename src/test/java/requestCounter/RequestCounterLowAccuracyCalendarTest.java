@@ -12,7 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Test(groups="unit")
-public class RequestCounterLowAccuracyTest {
+public class RequestCounterLowAccuracyCalendarTest {
 	
 	@Test(description="Test get This Hour")
 	public void testGetThisHour() throws FileNotFoundException, IOException, InstantiationException, IllegalAccessException, InterruptedException{
@@ -31,7 +31,7 @@ public class RequestCounterLowAccuracyTest {
 				try {
 					startLatch.countDown();
 					startLatch.await();
-					for(int i = 0; i < 1000000; i++){
+					for(int i = 0; i < 10000000; i++){
 						instance.addOneRequest();
 					}
 					doneLatch.countDown();

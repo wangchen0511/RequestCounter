@@ -26,8 +26,8 @@ public class RequestCounterThreadBased implements IRequestCounter {
 
 		@Override
 		public void run() {
+			lock.lock();
 			try{
-				lock.lock();
 				secQueue.add(currentSecReqs.getAndSet(0));
 				if(secCounter.incrementAndGet() == 60){
 					secCounter.set(0);
@@ -100,7 +100,7 @@ public class RequestCounterThreadBased implements IRequestCounter {
 		return res;
 	}
 	
-	public void addOneRequest(){
+	public void addOneRequest() throws InstantiationException, IllegalAccessException{
 		currentSecReqs.incrementAndGet();
 		currentMinReqs.incrementAndGet();
 		currentHourReqs.incrementAndGet();
@@ -124,7 +124,7 @@ public class RequestCounterThreadBased implements IRequestCounter {
 	@Override
 	public long getLastSeveralHours(int hours) throws InstantiationException,
 			IllegalAccessException {
-		Iterator<Long> hourIter = minQueue.iteratorFromTailToHead();
+		Iterator<Long> hourIter = hourQueue.iteratorFromTailToHead();
 		long res = 0;
 		for(int i = 0; i < hours; i++){
 			if(!hourIter.hasNext()){
